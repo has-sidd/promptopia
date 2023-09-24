@@ -41,13 +41,17 @@ const projectsSlice = createSlice({
 			return action.payload;
 		},
 		toggleCompleted: (state, action) => {
-			const project = state.projects.find((proj) => proj.id === action.payload);
+			const project = state.projects.find(
+				(proj) => proj._id === action.payload
+			);
 			if (project) {
 				project.completed = !project.completed;
 			}
 		},
 		toggleArchived: (state, action) => {
-			const project = state.projects.find((proj) => proj.id === action.payload);
+			const project = state.projects.find(
+				(proj) => proj._id === action.payload
+			);
 			if (project) {
 				project.archived = !project.archived;
 				if (project.archived) {

@@ -1,7 +1,6 @@
 'use client';
 
 import {
-	fetchProjects,
 	toggleArchived,
 	toggleCompleted,
 	updateProjectInDatabase,
@@ -11,25 +10,19 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
-const PromptCard = ({ project, handleEdit }) => {
+const ProjectCard = ({ project, handleEdit }) => {
 	const { data: session } = useSession();
-	const pathname = usePathname();
-	const router = useRouter();
-
 	const dispatch = useDispatch();
-	const data = useSelector((state) => state.po);
-
 	const _tags = project.tags.replace(/ /g, '').split(',');
-	// console.log(project);
 
 	const handleToggleCompleted = () => {
 		const changes = {
 			completed: !project.completed,
 			archived: project.archived,
 		};
-		dispatch(toggleCompleted(project.id));
+
+		dispatch(toggleCompleted(project._id));
 		dispatch(updateProjectInDatabase({ id: project._id, changes }));
-		dispatch(fetchProjects('all'));
 	};
 
 	const handleToggleArchived = () => {
@@ -40,9 +33,8 @@ const PromptCard = ({ project, handleEdit }) => {
 		if (changes.archived) {
 			changes.completed = true;
 		}
-		dispatch(toggleArchived(project.id));
+		dispatch(toggleArchived(project._id));
 		dispatch(updateProjectInDatabase({ id: project._id, changes }));
-		dispatch(fetchProjects('all'));
 	};
 
 	return (
@@ -126,4 +118,4 @@ const PromptCard = ({ project, handleEdit }) => {
 	);
 };
 
-export default PromptCard;
+export default ProjectCard;

@@ -1,4 +1,8 @@
-import { setProject, toggleCompletion } from '@features/projects/projectSlice';
+import {
+	setProject,
+	toggleArchive,
+	toggleCompletion,
+} from '@features/projects/projectSlice';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import DatePicker from './DatePicker';
@@ -7,8 +11,6 @@ import ImagePicker from './ImagePicker';
 const Form = ({ type, submitting, handleSubmit }) => {
 	const _project = useSelector((state) => state.project);
 	const dispatch = useDispatch();
-
-	// console.log(_project);
 
 	return (
 		<section className="w-full max-w-full flex-start flex-col">
@@ -108,6 +110,17 @@ const Form = ({ type, submitting, handleSubmit }) => {
 						type="checkbox"
 						checked={_project.completed}
 						onChange={() => dispatch(toggleCompletion())}
+						className="toggle"
+					/>
+				</label>
+				<label className="label cursor-pointer">
+					<span className="label-text font-satoshi font-semibold text-sm text-gray-700">
+						Archived
+					</span>
+					<input
+						type="checkbox"
+						checked={_project.archived}
+						onChange={() => dispatch(toggleArchive())}
 						className="toggle"
 					/>
 				</label>

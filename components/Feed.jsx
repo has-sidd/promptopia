@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ProjectCard from './ProjectCard';
 
-const PromptCardList = () => {
+const ProjectCardList = () => {
 	const router = useRouter();
 	const projects = useSelector((state) => state.projects.projects);
 	const handleEdit = (post) => {
@@ -30,10 +30,7 @@ const PromptCardList = () => {
 const Feed = ({ type }) => {
 	const { data: session } = useSession();
 	const router = useRouter();
-
 	const [searchText, setSearchText] = useState('');
-	const projects = useSelector((state) => state.projects.projects);
-
 	const dispatch = useDispatch();
 
 	const handleSearchChange = (e) => {
@@ -63,7 +60,7 @@ const Feed = ({ type }) => {
 						<p className="desc text-center capitalize text-black">{type}</p>
 					)}
 
-					<PromptCardList />
+					<ProjectCardList />
 				</>
 			)}
 		</section>

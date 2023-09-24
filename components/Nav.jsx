@@ -2,13 +2,10 @@
 import { getProviders, signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 const Nav = () => {
 	const { data: session } = useSession();
-	const router = useRouter();
-
 	const [providers, setProviders] = useState(null);
 	const [toggleDropdown, setToggleDropdown] = useState(false);
 
@@ -22,14 +19,7 @@ const Nav = () => {
 	return (
 		<nav className="flex-between w-full mb-16 pt-3">
 			<Link href="/" className="flex gap-2 flex-center">
-				<Image
-					width={30}
-					height={30}
-					alt="Promptopia Logo"
-					className="object-contain"
-					src="/assets/images/logo.svg"
-				/>
-				<p className="logo_text">Projectory</p>
+				<p className="text-lg text-primary-orange">Projectory</p>
 			</Link>
 
 			{/* Desktop Nav */}

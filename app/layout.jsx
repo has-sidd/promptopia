@@ -3,8 +3,8 @@ import Provider from '@components/Provider';
 import '@styles/globals.css';
 
 export const metdata = {
-	title: 'Promptopia',
-	description: 'Discover & Share AI Prompts',
+	title: 'Projectory',
+	description: 'A Slate for all your Projects',
 };
 
 const RootLayout = ({ children }) => {
