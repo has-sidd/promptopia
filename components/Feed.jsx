@@ -1,86 +1,71 @@
 'use client';
+import { fetchProjects } from '@features/projects/projectsSlice';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import PromptCard from './PromptCard';
+import { useDispatch, useSelector } from 'react-redux';
+import ProjectCard from './ProjectCard';
 
-const PromptCardList = ({ data, handleTagClick, handleProfileClick }) => {
+const PromptCardList = () => {
+	const router = useRouter();
+	const projects = useSelector((state) => state.projects.projects);
+	const handleEdit = (post) => {
+		router.push(`/update-project?id=${post._id}`);
+	};
+
 	return (
 		<div className="mt-16 prompt_layout">
-			{data.map((post) => (
-				<PromptCard
-					key={post._id}
-					post={post}
-					handleTagClick={handleTagClick}
-					handleProfileClick={handleProfileClick}
-				/>
-			))}
+			{projects &&
+				projects.map((project) => (
+					<ProjectCard
+						key={project._id}
+						project={project}
+						handleEdit={handleEdit}
+					/>
+				))}
 		</div>
 	);
 };
 
-const Feed = () => {
+const Feed = ({ type }) => {
 	const { data: session } = useSession();
 	const router = useRouter();
 
 	const [searchText, setSearchText] = useState('');
-	const [posts, setPosts] = useState([]);
+	const projects = useSelector((state) => state.projects.projects);
+
+	const dispatch = useDispatch();
 
 	const handleSearchChange = (e) => {
 		setSearchText(e.target.value);
 	};
 
-	const handleTagClick = (tag) => {
-		setSearchText(tag);
-	};
-
-	const handleProfileClick = (post) => {
-		session?.user.id !== post.creator._id
-			? router.push(
-					`/profile/${post.creator._id}?username=${post.creator.username}`
-			  )
-			: router.push(`/profile`);
-	};
-
 	useEffect(() => {
 		// fetch data from server
-		const fetchPosts = async () => {
-			const response = await fetch(`/api/prompt/search/${searchText}`);
-			const data = await response.json();
-			setPosts(data);
-		};
-
-		if (searchText !== '') fetchPosts();
-	}, [searchText]);
-
-	useEffect(() => {
-		// fetch data from server
-		const fetchPosts = async () => {
-			const response = await fetch('/api/prompt');
-			const data = await response.json();
-			setPosts(data);
-		};
-
-		fetchPosts();
-	}, []);
+		session?.user && dispatch(fetchProjects(type));
+	}, [session?.user]);
 
 	return (
 		<section className="feed">
-			<form className="relative w-full flex-center">
-				<input
-					type="text"
-					placeholder="Search"
-					value={searchText}
-					onChange={handleSearchChange}
-					required
-					className="search_input peer"
-				/>
-			</form>
-			<PromptCardList
-				data={posts}
-				handleTagClick={handleTagClick}
-				handleProfileClick={handleProfileClick}
-			/>
+			{session?.user && (
+				<>
+					<form className="relative w-full flex-center">
+						<input
+							type="text"
+							placeholder="Search"
+							value={searchText}
+							onChange={handleSearchChange}
+							required
+							className="search_input peer"
+						/>
+					</form>
+					{type != 'all' && (
+						<p className="desc text-center capitalize text-black">{type}</p>
+					)}
+
+					<PromptCardList />
+				</>
+			)}
 		</section>
 	);
 };

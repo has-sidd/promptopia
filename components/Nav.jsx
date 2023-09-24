@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Button } from './ui/button';
 const Nav = () => {
 	const { data: session } = useSession();
 	const router = useRouter();
@@ -20,7 +21,7 @@ const Nav = () => {
 	}, []);
 	return (
 		<nav className="flex-between w-full mb-16 pt-3">
-			<Link href="/" className="flex gap-2 felx-center">
+			<Link href="/" className="flex gap-2 flex-center">
 				<Image
 					width={30}
 					height={30}
@@ -28,15 +29,25 @@ const Nav = () => {
 					className="object-contain"
 					src="/assets/images/logo.svg"
 				/>
-				<p className="logo_text">Promptopia</p>
+				<p className="logo_text">Projectory</p>
 			</Link>
 
 			{/* Desktop Nav */}
 			<div className="sm:flex hidden">
 				{session?.user ? (
 					<div className="flex gap-3 md:gap-5">
-						<Link href="/create-prompt" className="black_btn">
-							Create Post
+						<Link href={'/completed'}>
+							<Button className="bg-transparent text-black hover:text-white">
+								Completed
+							</Button>
+						</Link>
+						<Link href={'/archived'}>
+							<Button className="bg-transparent text-black hover:text-white">
+								Archived
+							</Button>
+						</Link>
+						<Link href="/create-project" className="black_btn">
+							Add New Project
 						</Link>
 
 						<button
@@ -49,15 +60,13 @@ const Nav = () => {
 							Sign Out
 						</button>
 
-						<Link href="/profile">
-							<Image
-								src={session?.user.image}
-								width={37}
-								height={37}
-								alt="Profile"
-								className="rounded-full"
-							/>
-						</Link>
+						<Image
+							src={session?.user.image}
+							width={37}
+							height={37}
+							alt="Profile"
+							className="rounded-full"
+						/>
 					</div>
 				) : (
 					<>
@@ -95,18 +104,11 @@ const Nav = () => {
 						{toggleDropdown && (
 							<div className="dropdown">
 								<Link
-									href="/profile"
+									href="/create-project"
 									className="dropdown_link"
 									onClick={() => setToggleDropdown(false)}
 								>
-									My Profile
-								</Link>
-								<Link
-									href="/create-prompt"
-									className="dropdown_link"
-									onClick={() => setToggleDropdown(false)}
-								>
-									Create Prompt
+									Create Project
 								</Link>
 								<button
 									type="button"
